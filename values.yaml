@@ -8,7 +8,10 @@ airflow:
     AIRFLOW__CORE__FERNET_KEY: your_fernet_key_here
     AIRFLOW__CORE__DAGS_ARE_PAUSED_AT_CREATION: "false"
     AIRFLOW__CORE__LOAD_EXAMPLES: "false"
-
+  extraEnv:
+    - name: _PIP_ADDITIONAL_REQUIREMENTS
+      value: apache-airflow-providers-cncf-kubernetes
+      
 webserver:
   defaultUser:
     enabled: true
