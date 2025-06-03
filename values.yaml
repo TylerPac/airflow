@@ -2,14 +2,12 @@ executor: KubernetesExecutor
 
 airflow:
   image:
-    repository: apache/airflow
-    tag: 2.9.1 # or latest stable version
-    pullPolicy: IfNotPresent
+    repository: sirpacster/airflow-k8s
+    tag: latest # or latest stable version
+    pullPolicy: Always
 
   useDefaultImageForMigration: true
 
-  extraPipPackages:
-    - apache-airflow-providers-cncf-kubernetes
   config:
     AIRFLOW__CORE__FERNET_KEY: your_fernet_key_here
     AIRFLOW__CORE__DAGS_ARE_PAUSED_AT_CREATION: "false"
@@ -26,7 +24,7 @@ dags:
     enabled: true
     repo: "https://github.com/TylerPac/airflow.git"
     branch: "main"
-    subPath: ""  # folder in your repo with DAGs, or "" if root
+    subPath: "dags"  # folder in your repo with DAGs, or "" if root
     depth: 1
     wait: 60
     credentialsSecret: ""  # Optional: use if private repo
