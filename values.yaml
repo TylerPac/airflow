@@ -1,0 +1,45 @@
+executor: KubernetesExecutor
+
+airflow:
+  image:
+    repository: apache/airflow
+    tag: 2.9.1 # or latest stable version
+  config:
+    AIRFLOW__CORE__FERNET_KEY: your_fernet_key_here
+    AIRFLOW__CORE__DAGS_ARE_PAUSED_AT_CREATION: "false"
+    AIRFLOW__CORE__LOAD_EXAMPLES: "false"
+
+webserver:
+  defaultUser:
+    enabled: true
+    username: airflow
+    password: airflow
+
+dags:
+  gitSync:
+    enabled: true
+    repo: "https://github.com/TylerPac/airflow.git"
+    branch: "main"
+    subPath: "dags"  # folder in your repo with DAGs, or "" if root
+    depth: 1
+    wait: 60
+    credentialsSecret: ""  # Optional: use if private repo
+  persistence:
+    enabled: true
+    existingClaim: ""
+    size: 1Gi
+
+logs:
+  persistence:
+    enabled: false
+
+postgresql:
+  enabled: true
+  auth:
+    username: airflow
+    password: airflow
+    database: airflow
+
+
+redis:
+  enabled: true

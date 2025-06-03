@@ -1,0 +1,11 @@
+{"timestamp":"2025-06-03T17:50:39.909404","level":"info","event":"DAG bundles loaded: dags-folder, example_dags","logger":"airflow.dag_processing.bundles.manager.DagBundlesManager"}
+{"timestamp":"2025-06-03T17:50:39.909937","level":"info","event":"Filling up the DagBag from /opt/airflow/dags/crypto_catcher_dag.py","logger":"airflow.models.dagbag.DagBag"}
+{"timestamp":"2025-06-03T17:50:39.950978Z","level":"info","event":"Task instance is in running state","chan":"stdout","logger":"task"}
+{"timestamp":"2025-06-03T17:50:39.951563Z","level":"info","event":" Previous state of the Task instance: TaskInstanceState.QUEUED","chan":"stdout","logger":"task"}
+{"timestamp":"2025-06-03T17:50:39.951849Z","level":"info","event":"Current task name:run_local_crypto_catcher","chan":"stdout","logger":"task"}
+{"timestamp":"2025-06-03T17:50:39.952112Z","level":"info","event":"Dag name:crypto_catcher_dag_local","chan":"stdout","logger":"task"}
+{"timestamp":"2025-06-03T17:50:40.596497Z","level":"info","event":"[2025-06-03T17-50-40Z] Saved prices to crypto_prices_2025-06-03T17-50-40Z.json: {'bitcoin': {'usd': 106004}, 'ethereum': {'usd': 2622.41}}","chan":"stdout","logger":"task"}
+{"timestamp":"2025-06-03T17:50:40.619696","level":"info","event":"Done. Returned value was: None","logger":"airflow.task.operators.airflow.providers.standard.operators.python.PythonOperator"}
+{"timestamp":"2025-06-03T17:50:40.642724Z","level":"info","event":"Task instance in success state","chan":"stdout","logger":"task"}
+{"timestamp":"2025-06-03T17:50:40.643092Z","level":"info","event":" Previous state of the Task instance: TaskInstanceState.RUNNING","chan":"stdout","logger":"task"}
+{"timestamp":"2025-06-03T17:50:40.643371Z","level":"info","event":"Task operator:<Task(PythonOperator): run_local_crypto_catcher>","chan":"stdout","logger":"task"}
