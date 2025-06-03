@@ -4,6 +4,9 @@ airflow:
   image:
     repository: apache/airflow
     tag: 2.9.1 # or latest stable version
+    pullPolicy: IfNotPresent
+
+  useDefaultImageForMigration: true
   config:
     AIRFLOW__CORE__FERNET_KEY: your_fernet_key_here
     AIRFLOW__CORE__DAGS_ARE_PAUSED_AT_CREATION: "false"
@@ -11,7 +14,7 @@ airflow:
   extraEnv:
     - name: _PIP_ADDITIONAL_REQUIREMENTS
       value: apache-airflow-providers-cncf-kubernetes
-      
+
 webserver:
   defaultUser:
     enabled: true
