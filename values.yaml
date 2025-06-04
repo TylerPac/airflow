@@ -24,10 +24,11 @@ dags:
     enabled: true
     repo: "https://github.com/TylerPac/airflow.git"
     branch: "main"
-    subPath: "dags"  # folder in your repo with DAGs, or "" if root
+    subPath: "dags"         # Set to "dags" if the DAGs are in a folder
     depth: 1
     wait: 60
-    credentialsSecret: ""  # Optional: use if private repo
+    credentialsSecret: ""
+
   persistence:
     enabled: true
     existingClaim: ""
