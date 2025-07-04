@@ -1,5 +1,6 @@
 
 kind delete cluster --name airflow-cluster
+
 kind create cluster --name airflow-cluster --config kind-config.yaml
     What it does:
 
@@ -21,13 +22,35 @@ kubectl create namespace airflow
 
     Namespaces help isolate your Airflow deployment from other apps or future projects running in the same cluster.
 
-helm install fair-airflow apache-airflow/airflow -n airflow -f values.yaml
-helm install fair-airflow apache-airflow/airflow --version 1.11.0 -n airflow -f values.yaml
 
+
+kubectl apply -f text-read.yaml
+kubectl apply -f dag-read.yaml
+    Mount volumes
 
 docker build -t sirpacster/airflow-dags:latest .
 docker push sirpacster/airflow-dags:latest
-kubectl delete pods -n airflow --selector=release=fair-airflow
+    Build Docker Image
+
+docker build --pull --tag sirpacster/airflow-dags:latest .
+
+kind load docker-image sirpacster/airflow-dags:latest --name airflow-cluster    
+    Load image into Kind
+
+
+
+helm repo add apache-airflow https://airflow.apache.org
+
+    What it does:
+
+    Add apache airflow to your helm repo
+
+
+helm install fair-airflow apache-airflow/airflow -n airflow -f values.yaml
+helm install fair-airflow apache-airflow/airflow --version 1.11.0 -n airflow -f values.yaml
+    Use Older version for AirFlow
+
+
 helm upgrade fair-airflow apache-airflow/airflow --version 1.11.0 -n airflow -f values.yaml
 
     What it does:
@@ -43,29 +66,10 @@ helm upgrade fair-airflow apache-airflow/airflow --version 1.11.0 -n airflow -f 
     -f values.yaml uses the values file
 
 
-helm repo add apache-airflow https://airflow.apache.org
 
-    What it does:
-
-    Add apache airflow to your helm repo
-
-
-kubectl port-forward svc/fair-airflow-api-server 8080:8080 --namespace airflow    
-
-
-
-helm install dev-release apache-airflow/airflow --namespace airflow
-
-kubectl apply -f text-read.yaml
-
-kubectl port-forward svc/dev-release-api-server 8080:8080 -n airflow
-
-docker build --pull --tag sirpacster/airflow-dags:latest .
-
-kind load docker-image sirpacster/airflow-dags:latest --name airflow-cluster
-
-helm upgrade dev-release apache-airflow/airflow --namespace airflow --set images.airflow.repository=sirpacster/airflow-dags --set images.airflow.tag=latest
 
 kubectl delete pods -n airflow --selector=release=fair-airflow
 
-helm upgrade dev-release apache-airflow/airflow --namespace airflow -f values.yaml
+
+
+
