@@ -1,50 +1,65 @@
 executor: KubernetesExecutor
 
 airflow:
-  image:
-    repository: sirpacster/airflow-k8s
-    tag: latest # or latest stable version
-    pullPolicy: Always
-
-  useDefaultImageForMigration: true
-
   config:
-    AIRFLOW__CORE__FERNET_KEY: your_fernet_key_here
-    AIRFLOW__CORE__DAGS_ARE_PAUSED_AT_CREATION: "false"
-    AIRFLOW__CORE__LOAD_EXAMPLES: "false"
+    AIRFLOW__CORE__EXECUTOR: KubernetesExecutor
+    AIRFLOW__KUBERNETES__NAMESPACE: airflow
+    AIRFLOW__KUBERNETES__DAGS_IN_IMAGE: "True"
+    AIRFLOW__KUBERNETES__DELETE_WORKER_PODS: "True"
+    AIRFLOW__KUBERNETES__WORKER_CONTAINER_REPOSITORY: sirpacster/airflow-dags
+    AIRFLOW__KUBERNETES__WORKER_CONTAINER_TAG: "latest"
+    AIRFLOW__KUBERNETES__WORKER_CONTAINER_IMAGE_PULL_POLICY: Always
+
+images:
+  airflow:
+    repository: sirpacster/airflow-dags
+    tag: latest
+    pullPolicy: Always
+users:
+  createUserJob:
+    useHelmHooks: true
+    command: ["bash", "-c"]
+    args: ["airflow users create --username admin --password admin --firstname Admin --lastname User --role Admin --email admin@example.com"]
+rbac:
+  create: true
+
+serviceAccount:
+  create: true
+  name: airflow-sa
+
+scheduler:
+  securityContext:
+    fsGroup: 1000
+  extraVolumes:
+    - name: text-read-volume
+      persistentVolumeClaim:
+        claimName: text-read-pvc
+  extraVolumeMounts:
+    - name: text-read-volume
+      mountPath: /mnt/data
+      readOnly: false
+      
 
 webserver:
-  defaultUser:
-    enabled: true
-    username: airflow
-    password: airflow
-
-dags:
-  gitSync:
-    enabled: true
-    repo: "https://github.com/TylerPac/airflow.git"
-    branch: "main"
-    subPath: "dags"         # Set to "dags" if the DAGs are in a folder
-    depth: 1
-    wait: 60
-    credentialsSecret: ""
-
-  persistence:
-    enabled: true
-    existingClaim: ""
-    size: 1Gi
-
-logs:
-  persistence:
-    enabled: false
-
-postgresql:
-  enabled: true
-  auth:
-    username: airflow
-    password: airflow
-    database: airflow
-
-
-redis:
-  enabled: true
+  securityContext:
+    fsGroup: 1000
+  extraVolumes:
+    - name: text-read-volume
+      persistentVolumeClaim:
+        claimName: text-read-pvc
+  extraVolumeMounts:
+    - name: text-read-volume
+      mountPath: /mnt/data
+      readOnly: false
+    
+workers:
+  securityContext:
+    fsGroup: 1000
+  extraVolumes:
+    - name: text-read-volume
+      persistentVolumeClaim:
+        claimName: text-read-pvc
+  extraVolumeMounts:
+    - name: text-read-volume
+      mountPath: /mnt/data
+      readOnly: false
