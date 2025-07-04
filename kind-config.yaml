@@ -5,3 +5,5 @@ nodes:
     extraMounts:
       - hostPath: C:\Users\User\Desktop\Test_Read
         containerPath: /mnt/localfiles
+      - hostPath: C:\Users\User\Desktop\SeniorProject\airflow\dags
+        containerPath: /opt/airflow/dags

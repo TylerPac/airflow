@@ -4,7 +4,7 @@ airflow:
   config:
     AIRFLOW__CORE__EXECUTOR: KubernetesExecutor
     AIRFLOW__KUBERNETES__NAMESPACE: airflow
-    AIRFLOW__KUBERNETES__DAGS_IN_IMAGE: "True"
+    AIRFLOW__KUBERNETES__DAGS_IN_IMAGE: "False"
     AIRFLOW__KUBERNETES__DELETE_WORKER_PODS: "True"
     AIRFLOW__KUBERNETES__WORKER_CONTAINER_REPOSITORY: sirpacster/airflow-dags
     AIRFLOW__KUBERNETES__WORKER_CONTAINER_TAG: "latest"
@@ -34,11 +34,16 @@ scheduler:
     - name: text-read-volume
       persistentVolumeClaim:
         claimName: text-read-pvc
+    - name: dag-read-volume
+      persistentVolumeClaim:
+        claimName: dag-read-pvc
   extraVolumeMounts:
     - name: text-read-volume
       mountPath: /mnt/data
       readOnly: false
-      
+    - name: dag-read-volume
+      mountPath: /opt/airflow/dags
+      readOnly: false  
 
 webserver:
   securityContext:
@@ -47,10 +52,16 @@ webserver:
     - name: text-read-volume
       persistentVolumeClaim:
         claimName: text-read-pvc
+    - name: dag-read-volume
+      persistentVolumeClaim:
+        claimName: dag-read-pvc
   extraVolumeMounts:
     - name: text-read-volume
       mountPath: /mnt/data
       readOnly: false
+    - name: dag-read-volume
+      mountPath: /opt/airflow/dags
+      readOnly: false  
     
 workers:
   securityContext:
@@ -59,7 +70,13 @@ workers:
     - name: text-read-volume
       persistentVolumeClaim:
         claimName: text-read-pvc
+    - name: dag-read-volume
+      persistentVolumeClaim:
+        claimName: dag-read-pvc
   extraVolumeMounts:
     - name: text-read-volume
       mountPath: /mnt/data
       readOnly: false
+    - name: dag-read-volume
+      mountPath: /opt/airflow/dags
+      readOnly: false  

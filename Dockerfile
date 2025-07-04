@@ -12,5 +12,5 @@ ENV AIRFLOW_INSTALL_EDITABLE="false"
 
 RUN pip install --no-cache-dir "apache-airflow-providers-cncf-kubernetes==7.4.1" "google-re2>=1.1.2" mysql-connector-python requests
 # Copy DAG and script into Airflow DAGs folders
-COPY dags/ /opt/airflow/dags/
-COPY TextParser_to_MySQL.py /opt/airflow/dags/
+# COPY dags/ /opt/airflow/dags/
+# COPY TextParser_to_MySQL.py /opt/airflow/dags/

@@ -18,8 +18,14 @@ with DAG(
         namespace='airflow',
         image='docker.io/sirpacster/airflow-dags:latest',  
         cmds=["python", "/opt/airflow/dags/TextParser_to_MySQL.py"],
-        is_delete_operator_pod=True,  # Keep the pod after completion for logs
+        is_delete_operator_pod=False,  # Keep the pod after completion for logs TEST
         volumes=[
+            k8s.V1Volume(
+                name="dag-read-pvc",
+                persistent_volume_claim=k8s.V1PersistentVolumeClaimVolumeSource(
+                    claim_name="dag-read-pvc"
+                )
+            ),
             k8s.V1Volume(
                 name="text-read-pvc",
                 persistent_volume_claim=k8s.V1PersistentVolumeClaimVolumeSource(
@@ -28,6 +34,11 @@ with DAG(
             )
         ],
         volume_mounts=[
+            k8s.V1VolumeMount(
+                mount_path="/opt/airflow/dags",
+                name="dag-read-pvc",
+                read_only=False
+            ),
             k8s.V1VolumeMount(
                 mount_path="/mnt/data",
                 name="text-read-pvc",

@@ -1,4 +1,5 @@
 
+kind delete cluster --name airflow-cluster
 kind create cluster --name airflow-cluster --config kind-config.yaml
     What it does:
 
@@ -22,11 +23,16 @@ kubectl create namespace airflow
 
 helm install fair-airflow apache-airflow/airflow -n airflow -f values.yaml
 helm install fair-airflow apache-airflow/airflow --version 1.11.0 -n airflow -f values.yaml
+
+
+docker build -t sirpacster/airflow-dags:latest .
+docker push sirpacster/airflow-dags:latest
+kubectl delete pods -n airflow --selector=release=fair-airflow
 helm upgrade fair-airflow apache-airflow/airflow --version 1.11.0 -n airflow -f values.yaml
 
     What it does:
 
-    Installs the Apache Airflow Helm chart into your cluster using Helm, a package manager for Kubernetes.
+    Installs the Apache Airflow Helm chart into your cluster using Helm, a package manager for Kubernetes.c
 
     fair-airflow: this is your release name — you can change it if you want.
 
@@ -60,6 +66,6 @@ kind load docker-image sirpacster/airflow-dags:latest --name airflow-cluster
 
 helm upgrade dev-release apache-airflow/airflow --namespace airflow --set images.airflow.repository=sirpacster/airflow-dags --set images.airflow.tag=latest
 
-kubectl delete pods -n airflow --selector=release=dev-release
+kubectl delete pods -n airflow --selector=release=fair-airflow
 
 helm upgrade dev-release apache-airflow/airflow --namespace airflow -f values.yaml
