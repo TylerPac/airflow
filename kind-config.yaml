@@ -3,7 +3,7 @@ apiVersion: kind.x-k8s.io/v1alpha4
 nodes:
   - role: control-plane
     extraMounts:
-      - hostPath: C:\Users\User\Desktop\Test_Read
+      - hostPath: D:\School\2025\Summer\Capstone\Data_folder_test #<-- location of data storage
         containerPath: /mnt/localfiles
-      - hostPath: C:\Users\User\Desktop\SeniorProject\airflow\dags
+      - hostPath: D:\School\2025\Summer\Capstone\Airflow_kind_env\dags #<-- Dag File location on your computer
         containerPath: /opt/airflow/dags
