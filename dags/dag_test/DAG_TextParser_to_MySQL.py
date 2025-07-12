@@ -17,7 +17,7 @@ with DAG(
         name='TextParser_to_MySQL',
         namespace='airflow',
         image='docker.io/sirpacster/airflow-dags:latest',  
-        cmds=["python", "/opt/airflow/dags/TextParser_to_MySQL.py"],
+        cmds=["python", "/opt/airflow/dags/DAG_test/TextParser_to_MySQL.py"],
         is_delete_operator_pod=False,  # Keep the pod after completion for logs TEST
         volumes=[
             k8s.V1Volume(
@@ -35,7 +35,7 @@ with DAG(
         ],
         volume_mounts=[
             k8s.V1VolumeMount(
-                mount_path="/opt/airflow/dags",
+                mount_path="/opt/airflow/dags/DAG_test",
                 name="dag-read-pvc",
                 read_only=False
             ),
@@ -46,4 +46,3 @@ with DAG(
             )
         ],
     )
-    
