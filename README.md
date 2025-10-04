@@ -1,7 +1,7 @@
 # Apache Airflow on Kubernetes (DevOps Senior Project)
 
 This guide describes how to build and deploy Apache Airflow using KIND (Kubernetes IN Docker), Helm, and a custom Docker image containing your DAGs and scripts.
-
+![Workflow Diagram](./seniorproject.png)
 ---
 ## 🛠️ Prerequisites
 
